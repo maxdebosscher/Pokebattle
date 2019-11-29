@@ -4,10 +4,11 @@ class Pokemon {
 
 	public $name = '';
 	public $energyType = '';
-	public $health = 0;
-	public $attacks = [];      // [['name', damage]]
-	public $weakness = [];     // ['energyType', multiplier]
-	public $resistance = [];   // ['energyType', value]
+	public $hitpoints = 0;
+	public $attack_1;          // {'name', damage}
+    public $attack_2;          // {'name', damage}
+	public $weakness;          // {'energyType', multiplier}
+	public $resistance;        // {'energyType', value}
 	
     /**
      * Construct a pokemon.
@@ -19,13 +20,14 @@ class Pokemon {
      * @param  array  $weakness
      * @param  array  $resistance
      */
-	public function __construct($name, $energyType, $hitpoints, $attacks, $weakness, $resistance)
+	public function __construct($name, $energyType, $hitpoints, $attack_1, $attack_2, $weakness, $resistance)
     {
         $this->name = $name;
         $this->energyType = $energyType;
         $this->hitpoints = $hitpoints;
         $this->health = $hitpoints;
-        $this->attacks = $attacks;
+        $this->attack_1 = $attack_1;
+        $this->attack_2 = $attack_2;
         $this->weakness = $weakness;
         $this->resistance = $resistance;
     }
@@ -38,14 +40,14 @@ class Pokemon {
      */
     public function attack($enemy, $attack)
     {
-        $damage = $this->attacks[$attack][1];
+        $damage = $attack->damage;
 
-        if($this->energyType == $enemy->weakness[0]) {
-            $damage = $damage * $enemy->weakness[1];
+        if($this->energyType == $enemy->weakness->energyType) {
+            $damage = $damage * $enemy->weakness->multiplier;
         }
 
-        if($this->energyType == $enemy->resistance[0]) {
-            $damage -= $enemy->resistance[1];
+        if($this->energyType == $enemy->resistance->energyType) {
+            $damage -= $enemy->resistance->value;
         }
 
         $enemy->health -= $damage;
@@ -62,5 +64,5 @@ class Pokemon {
     {
         print('<pre> ' . $this->name . ' HP: ' . $this->health . '</pre>');
     }
-    
+
 }
