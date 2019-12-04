@@ -5,8 +5,7 @@ class Pokemon {
 	public $name = '';
 	public $energyType = '';
 	public $hitpoints = 0;
-	public $attack_1;          // {'name', damage}
-    public $attack_2;          // {'name', damage}
+    public $attacks;           // [{'name', damage}]
 	public $weakness;          // {'energyType', multiplier}
 	public $resistance;        // {'energyType', value}
 	
@@ -20,14 +19,13 @@ class Pokemon {
      * @param  array  $weakness
      * @param  array  $resistance
      */
-	public function __construct($name, $energyType, $hitpoints, $attack_1, $attack_2, $weakness, $resistance)
+	public function __construct($name, $energyType, $hitpoints, $attacks, $weakness, $resistance)
     {
         $this->name = $name;
         $this->energyType = $energyType;
         $this->hitpoints = $hitpoints;
         $this->health = $hitpoints;
-        $this->attack_1 = $attack_1;
-        $this->attack_2 = $attack_2;
+        $this->attacks = $attacks;
         $this->weakness = $weakness;
         $this->resistance = $resistance;
     }
@@ -50,19 +48,27 @@ class Pokemon {
             $damage -= $enemy->resistance->value;
         }
 
-        $enemy->health -= $damage;
-        print('<pre> ' . $this->name . ' dealt ' . $damage . ' damage to ' . $enemy->name . '</pre>');
+        print('<pre>' . $this->name . ' dealt ' . $damage . ' damage to ' . $enemy->name . '.</pre>');
+
+        return $damage;
     }
 
     /**
      * Print health.
      *
-     * @param  string  $enemy
-     * @param  int  $attack
+     */
+    public function takeDamage($damage)
+    {
+        $this->health -= $damage;
+    }
+
+    /**
+     * Print health.
+     *
      */
     public function printHealth()
     {
-        print('<pre> ' . $this->name . ' HP: ' . $this->health . '</pre>');
+        print('<pre>' . $this->name . ' HP: ' . $this->health . '.</pre>');
     }
 
 }
